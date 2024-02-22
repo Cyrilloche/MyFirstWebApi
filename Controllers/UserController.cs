@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyFirstWebApi.Context;
 using MyFirstWebAPI.Models;
+using MyFirstWebAPI.Utilities;
 
 namespace MyFirstWebAPI.Controllers
 {
@@ -46,6 +47,8 @@ namespace MyFirstWebAPI.Controllers
         public async Task<User> AddUser(User user)
         {
             _context.Add(user);
+            
+            user.Password = BcryptHash.HashPassword(user.Password);
             await _context.SaveChangesAsync();
             return user;
         }
@@ -71,5 +74,7 @@ namespace MyFirstWebAPI.Controllers
             if(user != null)
                 _context.Remove(user);
         }
+
+        
     }
 }
